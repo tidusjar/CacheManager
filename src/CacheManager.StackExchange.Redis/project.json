@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "CacheManager.Core": "",
-    "StackExchange.Redis": "1.0.488"
+    "StackExchange.Redis": "1.1.553-alpha"
   },
   "frameworks": {
     "net40": {
@@ -49,6 +49,8 @@
       "frameworkAssemblies": {
         "System.Configuration": ""
       }
+    },
+    "dotnet5.5": {
     }
   }
 }

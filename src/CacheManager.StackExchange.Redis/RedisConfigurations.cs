@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
 using System.IO;
 using static CacheManager.Core.Utility.Guard;
+#if !DOTNET5_5
+using System.Configuration;
+#endif
 
 namespace CacheManager.Redis
 {
@@ -30,12 +31,13 @@ namespace CacheManager.Redis
                         if (config == null)
                         {
                             config = new Dictionary<string, RedisConfiguration>();
-
+#if !DOTNET5_5
                             var section = ConfigurationManager.GetSection(RedisConfigurationSection.DefaultSectionName) as RedisConfigurationSection;
                             if (section != null)
                             {
                                 LoadConfiguration(section);
                             }
+#endif
                         }
                     }
                 }
@@ -77,6 +79,9 @@ namespace CacheManager.Redis
 
             if (!Configurations.ContainsKey(configurationName))
             {
+#if DOTNET5_5
+                throw new InvalidOperationException("No configuration added for configuration name " + configurationName);
+#else
                 // check connection strings if there is one matching the name
                 var connectionStringHolder = ConfigurationManager.ConnectionStrings[configurationName];
                 if (connectionStringHolder == null || string.IsNullOrWhiteSpace(connectionStringHolder.ConnectionString))
@@ -86,11 +91,13 @@ namespace CacheManager.Redis
 
                 var configuration = new RedisConfiguration(configurationName, connectionStringHolder.ConnectionString);
                 Configurations.Add(configurationName, configuration);
+#endif
             }
 
             return Configurations[configurationName];
         }
 
+#if !DOTNET5_5
         /// <summary>
         /// Loads the configuration.
         /// </summary>
@@ -182,5 +189,6 @@ namespace CacheManager.Redis
         {
             LoadConfiguration(RedisConfigurationSection.DefaultSectionName);
         }
+#endif
     }
 }

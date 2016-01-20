@@ -773,14 +773,14 @@ namespace CacheManager.Core
         {
             if (disposeManaged)
             {
-                foreach (var handle in this.cacheHandles)
-                {
-                    handle.Dispose();
-                }
-
                 if (this.Configuration.HasBackPlate)
                 {
                     this.cacheBackPlate.Dispose();
+                }
+
+                foreach (var handle in this.cacheHandles)
+                {
+                    handle.Dispose();
                 }
             }
 

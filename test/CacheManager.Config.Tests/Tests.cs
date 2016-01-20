@@ -77,9 +77,9 @@ namespace CacheManager.Config.Tests
         public static void SimpleAddGetTest(params ICacheManager<object>[] caches)
         {
             var swatch = Stopwatch.StartNew();
-            var threads = 10000;
-            var items = 1000;
-            var ops = threads * items * caches.Length;
+            var threads = 20;
+            var items = 10000;
+            var ops = (threads * items * caches.Length * 2) + items;
 
             var rand = new Random();
             var key = "key";
@@ -104,10 +104,7 @@ namespace CacheManager.Config.Tests
                         var x = cache.Get(key + ta);
                     }
 
-                    if (t % 1000 == 0)
-                    {
-                        Console.Write(".");
-                    }
+                    Console.Write(".");
 
                     object value;
                     if (!cache.TryUpdate("key" + rand.Next(0, items - 1), v => Guid.NewGuid().ToString(), out value))

@@ -23,14 +23,18 @@ namespace CacheManager.Config.Tests
 #if DNXCORE50
                 cfg.WithDictionaryHandle()
                     .EnablePerformanceCounters();
+
                 Console.WriteLine("Using Dictionary cache handle");
 #else
                 cfg.WithSystemRuntimeCacheHandle()
                     .DisableStatistics();
-                Console.WriteLine("Using System Runtime cache handle");
 
+                Console.WriteLine("Using System Runtime cache handle");
+#endif
                 cfg.WithRedisCacheHandle("redis", true)
                     .DisableStatistics();
+
+                Console.WriteLine("Using Redis cache handle");
 
                 cfg.WithJsonSerializer();
 
@@ -44,7 +48,6 @@ namespace CacheManager.Config.Tests
                         .WithConnectionTimeout(100)
                         .WithEndpoint("127.0.0.1", 6379);
                 });
-#endif
             });
             
             for (int i = 0; i < iterations; i++)

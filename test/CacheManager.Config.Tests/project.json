@@ -8,6 +8,7 @@
   "dependencies": {
     "CacheManager.Core": "",
     "CacheManager.Serialization.Json": "",
+    "CacheManager.StackExchange.Redis": "",
     "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*"
   },
   "commands": {
@@ -21,7 +22,6 @@
       },
       "dependencies": {
         "CacheManager.SystemRuntimeCaching": "",
-        "CacheManager.StackExchange.Redis": ""
       }
     },
     "dnxcore50": {

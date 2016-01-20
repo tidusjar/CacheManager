@@ -20,6 +20,7 @@ namespace CacheManager.Redis
     {
         private readonly string channelName;
         private readonly string identifier;
+        private readonly string connectionString;
         private StackRedis.ISubscriber redisSubscriper;
 
         /// <summary>
@@ -33,16 +34,15 @@ namespace CacheManager.Redis
             NotNull(configuration, nameof(configuration));
 
             this.channelName = "CacheManagerBackPlate";
-
             this.identifier = Guid.NewGuid().ToString();
+            this.connectionString = RedisConnectionPool.GetConnectionString(
+                RedisConfigurations.GetConfiguration(this.Name));
 
             RetryHelper.Retry(
                 () =>
                 {
                     // throws an exception if not found for the name
-                    var cfg = RedisConfigurations.GetConfiguration(this.Name);
-
-                    var connection = RedisConnectionPool.Connect(cfg);
+                    var connection = RedisConnectionPool.Connect(this.connectionString);
 
                     this.redisSubscriper = connection.GetSubscriber();
                 },
@@ -119,6 +119,7 @@ namespace CacheManager.Redis
             if (managed)
             {
                 this.redisSubscriper.Unsubscribe(this.channelName);
+                RedisConnectionPool.DisposeConnection(this.connectionString);
             }
 
             base.Dispose(managed);

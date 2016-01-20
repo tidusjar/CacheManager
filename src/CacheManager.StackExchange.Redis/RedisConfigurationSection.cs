@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !DOTNET5_5
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -349,3 +350,4 @@ namespace CacheManager.Redis
         }
     }
 }
+#endif
