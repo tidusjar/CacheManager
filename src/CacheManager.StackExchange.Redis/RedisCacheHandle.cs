@@ -78,7 +78,7 @@ namespace CacheManager.Redis
                 {
                     count += (int)server.DatabaseSize(this.RedisConfiguration.Database);
                 }
-                
+
                 // aprox size, only size on the master..
                 return count;
             }
