@@ -48,7 +48,7 @@ namespace CacheManager.Redis
                         var builder = new StringBuilder();
                         using (var log = new StringWriter(builder, CultureInfo.InvariantCulture))
                         {
-                            connection = StackRedis.ConnectionMultiplexer.Connect(connectionString, Console.Out);
+                            connection = StackRedis.ConnectionMultiplexer.Connect(connectionString, log);
                         }
 
                         connection.ConnectionFailed += (sender, args) =>
