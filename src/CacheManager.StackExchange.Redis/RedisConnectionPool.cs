@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using static CacheManager.Core.Utility.Guard;
 using StackRedis = StackExchange.Redis;
@@ -59,6 +60,13 @@ namespace CacheManager.Redis
                         if (!connection.IsConnected)
                         {
                             throw new InvalidOperationException("Connection failed.\n" + builder.ToString());
+                        }
+
+                        var endpoints = connection.GetEndPoints();
+                        if (!endpoints.Select(p => connection.GetServer(p))
+                            .Any(p => !p.IsSlave || p.AllowSlaveWrites))
+                        {
+                            throw new InvalidOperationException("No writeable endpoint found.");
                         }
 
                         connection.PreserveAsyncOrder = false;
