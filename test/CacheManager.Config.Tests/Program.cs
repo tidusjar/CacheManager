@@ -45,7 +45,7 @@ namespace CacheManager.Config.Tests
                     config
                         .WithAllowAdmin()
                         .WithDatabase(0)
-                        .WithConnectionTimeout(100)
+                        .WithConnectionTimeout(1000)
                         .WithEndpoint("127.0.0.1", 6379);
                 });
             });

@@ -45,12 +45,9 @@
       "dependencies": {
       }
     },
-    "dnx451": {
-      "frameworkAssemblies": {
-        "System.Configuration": ""
-      }
-    },
     "dotnet5.5": {
+      "dependencies": {
+      }
     }
   }
 }

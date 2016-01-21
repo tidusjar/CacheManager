@@ -8,8 +8,7 @@
   "dependencies": {
     "CacheManager.Core": "",
     "CacheManager.Serialization.Json": "",
-    "CacheManager.StackExchange.Redis": "",
-    "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*"
+    "CacheManager.StackExchange.Redis": ""
   },
   "commands": {
     "run": "CacheManager.Config.Tests"
@@ -21,17 +20,17 @@
         "System.Configuration": ""
       },
       "dependencies": {
-        "CacheManager.SystemRuntimeCaching": "",
+        "CacheManager.SystemRuntimeCaching": ""
       }
     },
     "dnxcore50": {
       "dependencies": {
-        "System.Threading": "4.0.10",
+        "System.Threading": "4.0.11-*",
         "System.Threading.Thread": "4.0.0-*",
-        "System.Threading.Tasks": "4.0.10-*",
-        "System.Threading.Tasks.Parallel": "4.0.0-*",
+        "System.Threading.Tasks": "4.0.11-*",
+        "System.Threading.Tasks.Parallel": "4.0.1-*",
         "System.Console": "4.0.0-*",
-        "System.Globalization": "4.0.10-*"
+        "System.Globalization": "4.0.11-*"
       }
     }
   }
