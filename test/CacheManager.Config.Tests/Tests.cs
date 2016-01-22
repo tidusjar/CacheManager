@@ -13,6 +13,8 @@ namespace CacheManager.Config.Tests
     {
         public static void CacheThreadTest(ICacheManager<string> cache, int seed)
         {
+            cache.Clear();
+
             var threads = 10;
             var numItems = 1000;
             var eventAddCount = 0;
@@ -69,32 +71,31 @@ namespace CacheManager.Config.Tests
                 eventAddCount,
                 eventGetCount,
                 eventRemoveCount));
-
-            cache.Clear();
-            cache.Dispose();
         }
 
         public static void SimpleAddGetTest(params ICacheManager<object>[] caches)
         {
             var swatch = Stopwatch.StartNew();
-            var threads = 20;
-            var items = 10000;
-            var ops = (threads * items * caches.Length * 2) + items;
+            var threads = 1000;
+            var items = 1000;
+            var ops = threads * items * caches.Length;
 
             var rand = new Random();
             var key = "key";
 
             foreach (var cache in caches)
             {
+                cache.Clear();
+
                 for (var ta = 0; ta < items; ta++)
                 {
-                    var value = cache.AddOrUpdate(key + ta, "val" + ta, (v) => "val" + ta);
-                    if (value == null)
-                    {
-                        throw new InvalidOperationException("really?");
-                    }
+                    ////var value = cache.AddOrUpdate(key + ta, "val" + ta, (v) => "val" + ta);
+                    ////if (value == null)
+                    ////{
+                    ////    throw new InvalidOperationException("really?");
+                    ////}
 
-                    //// cache.Add(key + ta, "val" + ta);
+                    cache.Add(key + ta, "val" + ta);
                 }
 
                 for (var t = 0; t < threads; t++)
@@ -104,16 +105,18 @@ namespace CacheManager.Config.Tests
                         var x = cache.Get(key + ta);
                     }
 
-                    Console.Write(".");
-
-                    object value;
-                    if (!cache.TryUpdate("key" + rand.Next(0, items - 1), v => Guid.NewGuid().ToString(), out value))
+                    if (t % 1000 == 0)
                     {
+                        Console.Write(".");
                     }
+
+                    ////object value;
+                    ////if (!cache.TryUpdate("key" + rand.Next(0, items - 1), v => Guid.NewGuid().ToString(), out value))
+                    ////{
+                    ////}
                 }
 
                 cache.Clear();
-                cache.Dispose();
             }
 
             var elapsed = swatch.ElapsedMilliseconds;
@@ -222,12 +225,20 @@ namespace CacheManager.Config.Tests
 
             while (true)
             {
-                create();
-                create();
-                read();
-                remove();
-                remove();
-                iterations++;
+                try
+                {
+                    create();
+                    create();
+                    read();
+                    remove();
+                    remove();
+                    iterations++;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: " + e.Message + "\n" + e.StackTrace);
+                    Thread.Sleep(1000);
+                }
             }
         }
     }
